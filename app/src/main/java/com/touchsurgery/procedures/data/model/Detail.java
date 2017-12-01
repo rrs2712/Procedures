@@ -3,9 +3,11 @@ package com.touchsurgery.procedures.data.model;
 import java.util.List;
 
 /**
- * Created by rrs27 on 2017-11-30.
+ * Class to represent a Detail object. Include getters, setters and toString method.
+ *
+ * @author Raul RS
+ * @version 1.0
  */
-
 public class Detail {
 
     private String id;

@@ -10,11 +10,18 @@ import android.widget.Toast;
 import com.touchsurgery.procedures.R;
 import com.touchsurgery.procedures.ui.main.MainView;
 
+/**
+ *
+ * Activity implementing {@link IDetail.View} to preserve MVP pattern.
+ *
+ * @author Raul RS
+ * @version 1.0
+ */
 public class DetailView extends AppCompatActivity implements IDetail.View{
 
-    private final String DEV = "RRS";
-    private final String TAG = DEV + ":" + this.getClass().getSimpleName();
+    // Bundles
     private String procedureID;
+    // MVP
     private IDetail.Presenter presenter;
 
     @Override
@@ -32,6 +39,11 @@ public class DetailView extends AppCompatActivity implements IDetail.View{
         presenter.showDetail(iv,tv,lv, this, procedureID);
     }
 
+    /**
+     * Method to check if the bundle has been received and it contains an ID. If not, will
+     * return to the previous activity.
+     *
+     */
     private void retrieveBundle(){
         Bundle bundle = getIntent().getExtras();
         procedureID = bundle.getString(MainView.ITEM_ID,"");

@@ -6,9 +6,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * Created by rrs27 on 2017-12-01.
+ * Interface with sub-interfaces to manage MVP implementation of the Detail view,
+ * presenter and model.
+ *
+ * @author Raul RS
+ * @version 1.0
  */
-
 public interface IDetail {
 
     interface View{}

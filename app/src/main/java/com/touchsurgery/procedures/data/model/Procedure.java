@@ -1,9 +1,11 @@
 package com.touchsurgery.procedures.data.model;
 
 /**
- * Created by rrs27 on 2017-11-30.
+ * Class to represent a Procedure object. Include getters, setters and toString method.
+ *
+ * @author Raul RS
+ * @version 1.0
  */
-
 public class Procedure {
     private String id;
     private String name;

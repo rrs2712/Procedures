@@ -18,24 +18,54 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by rrs27 on 2017-12-01.
+ *
+ * Class to implementing {@link IDetail.Model} to retrieve data from an end point and
+ * populate views with such data.
+ *
+ * @author Raul RS
+ * @version 1.0
  */
-
 public class DetailModel implements IDetail.Model {
 
+    // MVP
     private IDetail.Presenter presenter;
+    // Log
     private final String DEV = "RRS";
     private final String TAG = DEV + ":" + this.getClass().getSimpleName();
 
+    /**
+     * Class constructor. Receives a presenter to instantiate this class.
+     * @param presenter - {{@link IDetail.Presenter}}
+     */
     public DetailModel(IDetail.Presenter presenter) {
         this.presenter = presenter;
     }
 
+    /**
+     *
+     * Fills views passed as references by parameters:
+     *
+     * @param iv - ImageView
+     * @param tv - TextView
+     * @param lv - ListView
+     * @param context - Activity
+     * @param procedureID - String
+     */
     @Override
     public void fillWidgets(final ImageView iv, final TextView tv, final ListView lv, final Activity context, String procedureID) {
         retrieveData(iv, tv, lv, context, procedureID);
     }
 
+    /**
+     *
+     * Obtains data from an end point using {@link Retrofit} and {@link com.google.gson.Gson}
+     *
+     * @param iv - ImageView
+     * @param tv - TextView
+     * @param lv - ListView
+     * @param context - Activity
+     * @param procedureID - String
+     */
     private void retrieveData(final ImageView iv, final TextView tv, final ListView lv, final Activity context, String procedureID) {
         Log.d(TAG,"retrieveData");
         Retrofit retrofit = new Retrofit.Builder()
@@ -44,44 +74,38 @@ public class DetailModel implements IDetail.Model {
                 .build();
 
         ServiceContract detailContract = retrofit.create(ServiceContract.class);
-        Log.d(TAG,"procedureContract created");
 
         Call<Detail> requestDetail = detailContract.getDetail(procedureID);
-        Log.d(TAG,"requestProcedures created");
 
         requestDetail.enqueue(new Callback<Detail>() {
             @Override
             public void onResponse(Call<Detail> call, Response<Detail> response) {
-                Log.d(TAG, "onResponse");
                 if(!response.isSuccessful()){
                     Log.d(TAG,"unsuccessful: " + response.code());
                     return;
                 }
 
-                Log.d(TAG, "Body has " + response.toString());
                 Detail detail = response.body();
-
-                setWidgets(this,detail,iv,tv, lv, context);
-
-//                for (Procedure procedure : dataModel.procedures){
-                Log.d(TAG,String.format("%s: %s", detail.getId(), detail.getName()));
-                Log.d(TAG,String.format("%s", detail.getPhases().toString()));
-                Log.d(TAG,"----------------");
+                setWidgets(detail,iv,tv, lv, context);
             }
 
             @Override
-//            public void onFailure(Call<Model> call, Throwable t) {
             public void onFailure(Call<Detail> call, Throwable t) {
                 Log.e(TAG,"onFailure: " + t.getMessage());
             }
         });
     }
 
-    private void setWidgets(Callback<Detail> callback, Detail detail, ImageView iv, TextView tv, ListView lv, Activity context) {
-//        ImageView iv = (ImageView) findViewById(R.id.detail_icon);
-//        TextView tv = (TextView) findViewById(R.id.detail_name);
-//        final ListView lv = (ListView) findViewById(R.id.listview_detail);
-
+    /**
+     * Method to set a custom views of a detail object.
+     *
+     * @param detail - {@link Detail}
+     * @param iv - ImageView
+     * @param tv - TextView
+     * @param lv - ListView
+     * @param context - Activity
+     */
+    private void setWidgets(Detail detail, ImageView iv, TextView tv, ListView lv, Activity context) {
         ImageLoader imageloader = ImageLoader.getInstance();
         imageloader.init(ImageLoaderConfiguration.createDefault(context));
         imageloader.displayImage(detail.getCard(), iv);
@@ -90,12 +114,5 @@ public class DetailModel implements IDetail.Model {
 
         PhaseAdapter phaseAdapter = new PhaseAdapter(context,detail.getPhases());
         lv.setAdapter(phaseAdapter);
-//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View View, int position, long id) {
-//                Phase phase = detail.getPhases().get(position);
-//                Log.d(TAG,"Phase: " +  phase.toString());
-//            }
-//        });
     }
 }

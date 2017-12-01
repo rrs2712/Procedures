@@ -18,25 +18,46 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by rrs27 on 2017-12-01.
+ *
+ * Class to implementing {@link IProcedure.Model} to retrieve data from an end point and
+ * populate a list view with such data.
+ *
+ * @author Raul RS
+ * @version 1.0
  */
-
 public class MainModel implements IProcedure.Model{
 
+    // Log
     private final String DEV = "RRS";
     private final String TAG = DEV + ":" + this.getClass().getSimpleName();
-
+    // Presenter
     private IProcedure.Presenter presenter;
 
+    /**
+     * Class constructor. Receives {@link IProcedure.Presenter} to instantiate this class.
+     * @param presenter - IProcedure.Presenter
+     */
     public MainModel(IProcedure.Presenter presenter) {
         this.presenter = presenter;
     }
 
+    /**
+     * Fills a list view with data obtained from an end point
+     *
+     * @param lv - {@link ListView}
+     * @param context - {@link Activity}
+     */
     @Override
     public void fillList(ListView lv, Activity context) {
         retrieveData(lv, context);
     }
 
+    /**
+     * Obtains data from an end point using {@link Retrofit} and {@link com.google.gson.Gson}
+     *
+     * @param lv - {@link ListView}
+     * @param context - {@link Activity}
+     */
     private void retrieveData(final ListView lv, final Activity context) {
         Log.d(TAG,"retrieveData");
         Retrofit retrofit = new Retrofit.Builder()
@@ -45,29 +66,18 @@ public class MainModel implements IProcedure.Model{
                 .build();
 
         ServiceContract serviceContract = retrofit.create(ServiceContract.class);
-        Log.d(TAG,"serviceContract created");
-
         Call<List<Procedure>> requestModel = serviceContract.getProcedures();
-        Log.d(TAG,"requestProcedures created");
 
         requestModel.enqueue(new Callback<List<Procedure>>() {
             @Override
             public void onResponse(Call<List<Procedure>> call, Response<List<Procedure>> response) {
-                Log.d(TAG, "onResponse");
                 if(!response.isSuccessful()){
-                    Log.d(TAG,"unsuccessful: " + response.code());
+                    Log.w(TAG,"unsuccessful: " + response.code());
                     return;
                 }
 
-                Log.d(TAG, "Body has " + response.toString());
                 List<Procedure> dataModel = response.body();
-
-                setWidgets(this,dataModel, lv, context);
-
-                for (Procedure procedure : dataModel){
-                    Log.d(TAG,String.format("%s: %s", procedure.getId(), procedure.getName()));
-                    Log.d(TAG,"----------------");
-                }
+                setWidgets(dataModel, lv, context);
             }
 
             @Override
@@ -77,31 +87,27 @@ public class MainModel implements IProcedure.Model{
         });
     }
 
-    private void setWidgets(Callback<List<Procedure>> callback, final List<Procedure> procedures, ListView lv, Activity context) {
+    /**
+     *
+     * Method to set a custom ListView for a list of {@link Procedure}
+     *
+     * @param procedures - {@link List<Procedure>}
+     * @param lv - {@link ListView}
+     * @param context - {@link Activity}
+     */
+    private void setWidgets(final List<Procedure> procedures, ListView lv, Activity context) {
 
         ProcedureAdapter procedureAdapter = new ProcedureAdapter(context,procedures);
 
-//        final ListView lv = (ListView) findViewById(R.id.listview_procedures);
         lv.setAdapter(procedureAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Procedure procedure = procedures.get(position);
-                Log.d(TAG,"Item: " +  procedure.toString());
+                Log.d(TAG,"Procedure: " +  procedure.toString());
                 presenter.sendDetailID(procedure.getId());
-//                showDetail(procedure.getId());
             }
         });
     }
 
-//    private void showDetail(String id) {
-//        Log.d(TAG,"Selected item: " + id);
-//
-//        Bundle b = new Bundle();
-//        b.putString(MainView.ITEM_ID,id);
-//
-//        Intent i = new Intent(this, DetailView.class);
-//        i.putExtras(b);
-//        startActivity(i);
-//    }
 }

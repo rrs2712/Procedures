@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.widget.ListView;
 
 /**
- * Created by rrs27 on 2017-12-01.
+ * Interface with sub-interfaces to manage MVP implementation of the Main view,
+ * presenter and model.
+ *
+ * @author Raul RS
+ * @version 1.0
  */
-
 public interface IProcedure {
 
     interface View {

@@ -9,11 +9,21 @@ import android.widget.ListView;
 import com.touchsurgery.procedures.R;
 import com.touchsurgery.procedures.ui.detail.DetailView;
 
+/**
+ *
+ * Activity implementing {@link IProcedure.View} to preserve MVP pattern.
+ *
+ * @author Raul RS
+ * @version 1.0
+ */
 public class MainView extends AppCompatActivity implements IProcedure.View {
 
-    public static final String ITEM_ID = "item_detail_id";
+    // Log
     private final String DEV = "RRS";
     private final String TAG = DEV + ":" + this.getClass().getSimpleName();
+    // Bundles
+    public static final String ITEM_ID = "item_detail_id";
+    // MVP
     private IProcedure.Presenter presenter;
 
     @Override
@@ -31,6 +41,12 @@ public class MainView extends AppCompatActivity implements IProcedure.View {
         showDetail(detailID);
     }
 
+    /**
+     *
+     * Method called when users clicks on an item.
+     *
+     * @param id - String
+     */
     private void showDetail(String id) {
         Log.d(TAG,"Selected item: " + id);
 
