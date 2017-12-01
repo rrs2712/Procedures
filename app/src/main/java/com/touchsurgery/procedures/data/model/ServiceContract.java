@@ -15,8 +15,8 @@ import retrofit2.http.Path;
 public interface ServiceContract {
 
 
-//    public static final String END_POINT="http://localhost:3000/";
-    public static final String END_POINT="http://192.168.1.19:3000/";
+    public static final String END_POINT="http://localhost:3000/";
+//    public static final String END_POINT="http://192.168.1.19:3000/";
 
     /**
      * Method to implement a solution focused on retrieve a list of {@link Procedure}
