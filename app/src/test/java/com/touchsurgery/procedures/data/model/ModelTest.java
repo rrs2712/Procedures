@@ -1,7 +1,5 @@
 package com.touchsurgery.procedures.data.model;
 
-import com.touchsurgery.procedures.ui.main.ProcedureContract;
-
 import org.junit.Test;
 
 import java.util.List;
@@ -24,12 +22,12 @@ public class ModelTest {
     public void ProcedureClient(){
         System.out.println("ProcedureClient");
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ProcedureContract.END_POINT)
+                .baseUrl(ServiceContract.END_POINT)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        ProcedureContract procedureContract = retrofit.create(ProcedureContract.class);
-        Call<List<Procedure>> requestProcedures = procedureContract.getProcedures();
+        ServiceContract serviceContract = retrofit.create(ServiceContract.class);
+        Call<List<Procedure>> requestProcedures = serviceContract.getProcedures();
         requestProcedures.enqueue(new Callback<List<Procedure>>() {
             @Override
             public void onResponse(Call<List<Procedure>> call, Response<List<Procedure>> response) {

@@ -15,4 +15,6 @@ public interface DetailContract {
     @GET("procedure_details/{id}")
 //    Call<Model> getDetail(@Path(value = "id", encoded = true) String id);
     Call<Detail> getDetail(@Path(value = "id", encoded = true) String id);
+
+    //todo: eliminate this class
 }

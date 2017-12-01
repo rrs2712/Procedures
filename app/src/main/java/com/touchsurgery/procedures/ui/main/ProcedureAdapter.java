@@ -59,17 +59,17 @@ public class ProcedureAdapter extends ArrayAdapter<Procedure> {
     }
 
     /**
-     * Provides a view for an AdapterView (ListView, GridView, etc.)
+     * Provides a View for an AdapterView (ListView, GridView, etc.)
      *
      * @param position The position in the list of data that should be displayed in the
-     *                 list item view.
-     * @param convertView The recycled view to populate.
+     *                 list item View.
+     * @param convertView The recycled View to populate.
      * @param parent The parent ViewGroup that is used for inflation.
      * @return The View for the position in the AdapterView.
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Check if the existing view is being reused, otherwise inflate the view
+        // Check if the existing View is being reused, otherwise inflate the View
         View listItemView = convertView;
         if(listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
